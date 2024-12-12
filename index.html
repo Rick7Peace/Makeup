@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Foundation App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites/dist/css/foundation.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .app-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .app-container {
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <h1>Interactive Foundation App</h1>
+    </header>
+
+    <div class="app-container">
+        <button class="button" id="showModal">Open Modal</button>
+        <form id="userForm">
+            <label for="userName">Enter your name:</label>
+            <input type="text" id="userName" placeholder="Your name">
+            <button type="submit" class="button">Submit</button>
+        </form>
+        <p id="welcomeMessage"></p>
+    </div>
+
+    <div class="reveal" id="exampleModal" data-reveal>
+        <h2>Welcome to the App!</h2>
+        <p>This is a modal. You can customize its content further.</p>
+        <button class="close-button" data-close aria-label="Close modal">
+            &times;
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites/dist/js/foundation.min.js"></script>
+    <script>
+        $(document).foundation();
+
+        const userNameInput = document.getElementById('userName');
+        const userForm = document.getElementById('userForm');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const modal = new Foundation.Reveal($('#exampleModal'));
+
+        document.getElementById('showModal').addEventListener('click', () => {
+            modal.open();
+        });
+
+        userForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userName = userNameInput.value.trim();
+            if (userName) {
+                localStorage.setItem('userName', userName);
+                displayWelcomeMessage(userName);
+            }
+        });
+
+        function displayWelcomeMessage(name) {
+            welcomeMessage.textContent = `Hello, ${name}! Welcome back.`;
+        }
+
+        // Load from localStorage on page load
+        const storedName = localStorage.getItem('userName');
+        if (storedName) {
+            displayWelcomeMessage(storedName);
+        }
+    </script>
+</body>
+</html>
